@@ -1,6 +1,6 @@
 /* GitHub Pages 전용. QR 영상은 브라우저에서 해석하고 GAS에는 문자열만 보냅니다. */
 // 같은 GAS 배포를 새 버전으로 갱신하면 이 URL은 그대로 사용합니다.
-const GAS_URL = 'https://script.google.com/macros/s/AKfycbyxnThzmGKUNgbCbF4IfC4dbLPx1hrTqUdr06cpA-p3yMYO2gkyVc8HmlW6q-bWawuX/exec'; // 새 배포 URL이면 교체
+const GAS_URL = 'https://script.google.com/macros/s/AKfycby5jCVwAh8-YVe-gpYuRn2uHiAXYf7dNIARudvf188sr73VcG0P4z0xvLD81SsSLXkh/exec'; // 새 배포 URL이면 교체
 const $ = (id) => document.getElementById(id);
 const video = $('video');
 const canvas = $('canvas');
@@ -290,6 +290,68 @@ window.addEventListener('pagehide', stopCamera);
 const escapeHTML = (value) => String(value ?? '').replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
 let recordsBusy = false;
 let currentRecords = [];
+
+// 카테고리별 전체 기록 구분해서 표시
+let recordPeriod = "today";
+
+function getFilteredRecords() {
+  const now = new Date();
+  const today = new Date(
+    now.getFullYear(),
+    now.getMonth(),
+    now.getDate()
+  );
+
+  return currentRecords.filter(record => {
+    if (recordPeriod === "all") return true;
+
+    const date = new Date(
+      String(record.createdAt).replace(" ", "T")
+    );
+
+    if (Number.isNaN(date.getTime())) return false;
+
+    if (recordPeriod === "today") {
+      return date >= today;
+    }
+
+    if (recordPeriod === "week") {
+      const start = new Date(today);
+      start.setDate(start.getDate() - 6);
+      return date >= start && date <= now;
+    }
+
+    return true;
+  });
+}
+
+function renderRecords() {
+  const records = getFilteredRecords();
+
+  document.querySelectorAll(".record-filter")
+    .forEach(button => {
+      button.classList.toggle(
+        "active",
+        button.dataset.period === recordPeriod
+      );
+    });
+
+  $("record-count").textContent =
+    `${records.length}건의 기록`;
+
+  $("record-list").innerHTML = records.length
+    ? records.map(recordCard).join("")
+    : '<div class="empty-records">해당 기간의 기록이 없습니다.</div>';
+}
+
+document.querySelectorAll(".record-filter")
+  .forEach(button => {
+    button.addEventListener("click", () => {
+      recordPeriod = button.dataset.period;
+      renderRecords();
+    });
+  });
+
 function switchView(view) {
   const showRecords = view === 'records';
   $('scan-view').hidden = showRecords;
@@ -312,25 +374,35 @@ function recordCard(r) {
       ${canDelete ? `<button type="button" class="record-delete" data-record-id="${escapeHTML(r.id)}">삭제</button>` : '<small>이전 기록</small>'}</div>
   </article>`;
 }
+
 async function loadRecords() {
   if (recordsBusy) return;
+
   recordsBusy = true;
-  $('refresh-records').disabled = true;
-  $('record-count').textContent = '시트에서 기록 불러오는 중…';
+  $("refresh-records").disabled = true;
+  $("record-count").textContent =
+    "Google Sheets에서 기록 불러오는 중…";
+
   try {
-    currentRecords = await api('getRecords', {});
-    $('record-count').textContent = `전체 ${currentRecords.length}건 · 최신순 (최대 300건)`;
-    $('record-list').innerHTML = currentRecords.length
-      ? currentRecords.map(recordCard).join('')
-      : '<div class="empty-records">아직 등록된 기록이 없습니다.</div>';
+    const result = await api("getRecords", {});
+
+    if (!Array.isArray(result)) {
+      throw new Error("기록 데이터 형식이 올바르지 않습니다.");
+    }
+
+    currentRecords = result;
+    renderRecords();
+
   } catch (error) {
-    $('record-count').textContent = '기록 조회 실패';
-    $('record-list').textContent = error.message || '기록을 불러오지 못했습니다.';
+    $("record-count").textContent = "기록 조회 실패";
+    $("record-list").textContent =
+      error.message || "시트 연결을 확인해 주세요.";
   } finally {
     recordsBusy = false;
-    $('refresh-records').disabled = false;
+    $("refresh-records").disabled = false;
   }
 }
+
 async function deleteRecord(id) {
   if (!confirm('이 기록을 삭제 처리할까요? 시트에는 삭제 이력이 남습니다.')) return;
   const buttons = [...document.querySelectorAll('.record-delete')];
