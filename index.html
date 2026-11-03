@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="ko">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -9,104 +10,166 @@
   <script defer src="./jsQR.js?v=1.4.0"></script>
   <script defer src="./app.js?v=mobile-1"></script>
 </head>
+
 <body>
   <div class="phone-app">
     <header class="phone-header">
       <div class="brand-mark" aria-hidden="true">高</div>
-      <div><span class="eyebrow">SCHOOL MANAGEMENT</span><h1>생활지도 관리</h1></div>
+      <div><span class="eyebrow">SCHOOL MANAGEMENT</span>
+        <h1>생활지도 관리</h1>
+      </div>
       <span class="test-badge">시범 운영</span>
     </header>
     <main class="phone-main">
       <div id="scan-view">
-      <section class="welcome">
-        <span class="date-label">학생 생활지도</span>
-        <h2>학생 QR을 스캔하고<br>상벌점을 등록하세요.</h2>
-        <p>학생 확인부터 점수 등록까지 한 번에 처리할 수 있어요.</p>
-      </section>
-      <ol class="steps" aria-label="진행 단계">
-        <li id="step1" class="active" aria-current="step"><span>1</span> QR 스캔</li>
-        <li id="step2"><span>2</span> 항목 선택</li>
-        <li id="step3"><span>3</span> 저장 완료</li>
-      </ol>
-
-      <section id="scan-panel" class="card" aria-labelledby="scan-title">
-        <div class="card-heading">
-          <div class="scan-icon" aria-hidden="true">⌗</div>
-          <div><h2 id="scan-title">학생증 QR 스캔</h2><p>QR 코드 전체가 사각형 안에 보이도록 맞춰 주세요.</p></div>
-        </div>
-        <div class="camera-wrap">
-          <video id="video" autoplay muted playsinline aria-label="QR 스캔 카메라"></video>
-          <div class="scan-frame" aria-hidden="true"></div>
-          <p id="camera-hint">카메라 대기 중</p>
-        </div>
-        <canvas id="canvas" hidden></canvas>
-        <button id="start" class="primary-button" type="button">QR 스캔 시작</button>
-        <button id="stop" class="secondary-button" type="button" hidden>카메라 종료</button>
-        <p class="help">휴대폰의 카메라 권한을 허용해 주세요.<br>학생명부의 QR식별값과 일치하는 학생을 조회합니다.</p>
-      </section>
-
-      <section id="loading-panel" class="card loading-card" aria-labelledby="loading-title" aria-busy="true" hidden>
-        <div class="spinner" aria-hidden="true"></div>
-        <h2 id="loading-title">학생을 확인하고 있어요</h2>
-        <p>QR 값으로 학생명부를 조회하고 있습니다.<br>잠시만 기다려 주세요.</p>
-      </section>
-
-      <section id="student-panel" class="card" aria-labelledby="student-title" hidden>
-        <div class="section-heading"><h2 id="student-title">학생 확인 · 항목 선택</h2><span class="pill">QR 조회 완료</span></div>
-        <section class="student-info" aria-labelledby="student-name">
-          <div class="student-heading"><span class="student-avatar" aria-hidden="true">학생</span><div><h3 id="student-name">—</h3><p id="student-detail"></p></div></div>
-          <dl class="student-grid">
-            <div><dt>학년</dt><dd id="student-grade">—</dd></div>
-            <div><dt>반</dt><dd id="student-class">—</dd></div>
-            <div><dt>번호</dt><dd id="student-number">—</dd></div>
-          </dl>
-          <div class="student-id-line"><span>학년도</span><strong id="student-year">—</strong></div>
-          <div class="student-id-line"><span>QR식별값</span><strong id="student-qr">—</strong></div>
+        <section class="welcome">
+          <span class="date-label">학생 생활지도</span>
+          <h2>학생 QR을 스캔하고<br>상벌점을 등록하세요.</h2>
+          <p>학생 확인부터 점수 등록까지 한 번에 처리할 수 있어요.</p>
         </section>
-        <fieldset id="criteria-fieldset">
-          <legend>등록할 상벌점 항목</legend>
-          <p class="field-help">학생과 항목을 확인한 뒤 저장해 주세요.</p>
-          <div id="criteria" class="criteria-list"></div>
-        </fieldset>
-        <p id="criteria-empty" class="help" hidden>사용 가능한 벌점 항목이 없습니다.</p>
-        <div id="selection-summary" class="selection-summary" hidden>
-          <div><span>선택 항목</span><strong id="selected-reason">—</strong></div>
-          <div><span>등록 점수</span><strong><span id="selected-score">—</span>점</strong></div>
+        <ol class="steps" aria-label="진행 단계">
+          <li id="step1" class="active" aria-current="step"><span>1</span> QR 스캔</li>
+          <li id="step2"><span>2</span> 항목 선택</li>
+          <li id="step3"><span>3</span> 저장 완료</li>
+        </ol>
+
+        <section id="scan-panel" class="card" aria-labelledby="scan-title">
+          <div class="card-heading">
+            <div class="scan-icon" aria-hidden="true">⌗</div>
+            <div>
+              <h2 id="scan-title">학생증 QR 스캔</h2>
+              <p>QR 코드 전체가 사각형 안에 보이도록 맞춰 주세요.</p>
+            </div>
+          </div>
+          <div class="camera-wrap">
+            <video id="video" autoplay muted playsinline aria-label="QR 스캔 카메라"></video>
+            <div class="scan-frame" aria-hidden="true"></div>
+            <p id="camera-hint">카메라 대기 중</p>
+          </div>
+          <canvas id="canvas" hidden></canvas>
+          <button id="start" class="primary-button" type="button">QR 스캔 시작</button>
+          <button id="stop" class="secondary-button" type="button" hidden>카메라 종료</button>
+          <p class="help">휴대폰의 카메라 권한을 허용해 주세요.<br>학생명부의 QR식별값과 일치하는 학생을 조회합니다.</p>
+        </section>
+
+        <section id="loading-panel" class="card loading-card" aria-labelledby="loading-title" aria-busy="true" hidden>
+          <div class="spinner" aria-hidden="true"></div>
+          <h2 id="loading-title">학생을 확인하고 있어요</h2>
+          <p>QR 값으로 학생명부를 조회하고 있습니다.<br>잠시만 기다려 주세요.</p>
+        </section>
+
+        <section id="student-panel" class="card" aria-labelledby="student-title" hidden>
+          <div class="section-heading">
+            <h2 id="student-title">학생 확인 · 항목 선택</h2><span class="pill">QR 조회 완료</span>
+          </div>
+          <section class="student-info" aria-labelledby="student-name">
+            <div class="student-heading"><span class="student-avatar" aria-hidden="true">학생</span>
+              <div>
+                <h3 id="student-name">—</h3>
+                <p id="student-detail"></p>
+              </div>
+            </div>
+            <dl class="student-grid">
+              <div>
+                <dt>학년</dt>
+                <dd id="student-grade">—</dd>
+              </div>
+              <div>
+                <dt>반</dt>
+                <dd id="student-class">—</dd>
+              </div>
+              <div>
+                <dt>번호</dt>
+                <dd id="student-number">—</dd>
+              </div>
+            </dl>
+            <div class="student-id-line"><span>학년도</span><strong id="student-year">—</strong></div>
+            <div class="student-id-line"><span>QR식별값</span><strong id="student-qr">—</strong></div>
+          </section>
+          <fieldset id="criteria-fieldset">
+            <legend>등록할 상벌점 항목</legend>
+            <p class="field-help">학생과 항목을 확인한 뒤 저장해 주세요.</p>
+            <div id="criteria" class="criteria-list"></div>
+          </fieldset>
+          <p id="criteria-empty" class="help" hidden>사용 가능한 벌점 항목이 없습니다.</p>
+          <div id="selection-summary" class="selection-summary" hidden>
+            <div><span>선택 항목</span><strong id="selected-reason">—</strong></div>
+            <div><span>등록 점수</span><strong><span id="selected-score">—</span>점</strong></div>
+          </div>
+          <p id="limits" class="help"></p>
+          <button id="submit" class="primary-button" type="button" disabled>확인 · 시트에 저장</button>
+          <button id="rescan" class="secondary-button" type="button">다른 학생 QR 스캔</button>
+          <p class="help">요청자ID: <strong id="requester-id">—</strong><br>승인 절차 없이 시트에 바로 저장됩니다.</p>
+        </section>
+
+        <section id="done-panel" class="card result-card" aria-labelledby="done-title" hidden>
+          <div class="result-check" aria-hidden="true">✓</div>
+          <h2 id="done-title">상벌점 기록을 저장했어요</h2>
+          <p>학생 정보와 선택한 상벌점이 점수 부여 시트에 기록되었습니다.</p>
+          <dl class="receipt-details">
+            <div>
+              <dt>학생</dt>
+              <dd id="saved-student">—</dd>
+            </div>
+            <div>
+              <dt>벌점 항목</dt>
+              <dd id="saved-reason">—</dd>
+            </div>
+            <div>
+              <dt>점수</dt>
+              <dd id="saved-score">—</dd>
+            </div>
+            <div>
+              <dt>요청자ID</dt>
+              <dd id="saved-requester">—</dd>
+            </div>
+          </dl>
+          <p id="receipt"></p>
+          <button id="again" class="primary-button" type="button">다음 학생 QR 스캔</button>
+        </section>
+      </div>
+      
+      <!--전체 기록 페이지-->
+      <section id="records-view" hidden>
+        <div class="records-heading">
+          <div>
+            <span class="date-label">GOOGLE SHEETS</span>
+            <h2>전체 기록</h2>
+            <p>시트에 등록된 상벌점 내역을 확인합니다.</p>
+          </div>
+          <button id="refresh-records" class="refresh-button" type="button">
+            새로고침
+          </button>
         </div>
-        <p id="limits" class="help"></p>
-        <button id="submit" class="primary-button" type="button" disabled>확인 · 시트에 저장</button>
-        <button id="rescan" class="secondary-button" type="button">다른 학생 QR 스캔</button>
-        <p class="help">요청자ID: <strong id="requester-id">—</strong><br>승인 절차 없이 시트에 바로 저장됩니다.</p>
+
+        <div class="record-filters">
+          <button type="button" class="record-filter active" data-period="today">오늘</button>
+          <button type="button" class="record-filter" data-period="week">최근 일주일</button>
+          <button type="button" class="record-filter" data-period="all">전체</button>
+        </div>
+
+        <div id="record-count" class="record-count">
+          기록을 불러와 주세요.
+        </div>
+
+        <div id="record-list" class="record-list"></div>
       </section>
 
-      <section id="done-panel" class="card result-card" aria-labelledby="done-title" hidden>
-        <div class="result-check" aria-hidden="true">✓</div>
-        <h2 id="done-title">상벌점 기록을 저장했어요</h2>
-        <p>학생 정보와 선택한 상벌점이 점수 부여 시트에 기록되었습니다.</p>
-        <dl class="receipt-details">
-          <div><dt>학생</dt><dd id="saved-student">—</dd></div>
-          <div><dt>벌점 항목</dt><dd id="saved-reason">—</dd></div>
-          <div><dt>점수</dt><dd id="saved-score">—</dd></div>
-          <div><dt>요청자ID</dt><dd id="saved-requester">—</dd></div>
-        </dl>
-        <p id="receipt"></p>
-        <button id="again" class="primary-button" type="button">다음 학생 QR 스캔</button>
-      </section>
-      </div>
-      <section id="records-view" hidden>
-        <div class="records-heading"><div><span class="date-label">GOOGLE SHEETS</span><h2>전체 기록</h2><p>시트에 저장된 상벌점 기록을 최신순으로 보여줍니다.</p></div><button id="refresh-records" class="refresh-button" type="button">새로고침</button></div>
-        <div id="record-count" class="record-count">기록 불러오는 중…</div>
-        <div id="record-list" class="record-list"></div>
-        <p class="help">테스트 기록만 사용하세요. 이 버전에는 사용자 인증이 없습니다.</p>
-      </section>
       <p id="message" class="status-message" role="status" aria-live="polite" aria-atomic="true"></p>
-      <noscript><p class="status-message">QR 인식과 학생 조회에는 JavaScript가 필요합니다. 브라우저에서 JavaScript를 허용해 주세요.</p></noscript>
+      <noscript>
+        <p class="status-message">QR 인식과 학생 조회에는 JavaScript가 필요합니다. 브라우저에서 JavaScript를 허용해 주세요.</p>
+      </noscript>
     </main>
     <nav class="main-tabs" aria-label="하단 메뉴">
-      <button type="button" id="tab-scan" class="tab active"><span class="tab-icon" aria-hidden="true">⌗</span><span>QR 등록</span></button>
-      <button type="button" id="tab-records" class="tab"><span class="tab-icon" aria-hidden="true">▤</span><span>전체 기록</span></button>
+      <button type="button" id="tab-scan" class="tab active"><span class="tab-icon" aria-hidden="true">⌗</span><span>QR
+          등록</span></button>
+      <button type="button" id="tab-records" class="tab"><span class="tab-icon" aria-hidden="true">▤</span><span>전체
+          기록</span></button>
     </nav>
-    <footer class="app-footer"><p>카메라 영상은 저장하거나 전송하지 않습니다.</p><small>생활지도 관리 · 모바일 웹</small></footer>
+    <footer class="app-footer">
+      <p>카메라 영상은 저장하거나 전송하지 않습니다.</p><small>생활지도 관리 · 모바일 웹</small>
+    </footer>
   </div>
 </body>
+
 </html>
