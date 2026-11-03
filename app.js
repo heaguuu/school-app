@@ -70,8 +70,10 @@ async function decodeVideo() {
   return window.jsQR(pixels.data, pixels.width, pixels.height, { inversionAttempts: 'attemptBoth' })?.data || null;
 }
 async function api(action, payload) {
-  if (location.protocol !== 'https:' || window.top !== window.self) {
-    throw new Error('GitHub Pages의 HTTPS 주소를 브라우저에서 직접 열어 주세요.');
+  if (!window.isSecureContext) {
+    throw new Error(
+      '보안 연결이 아닙니다. HTTPS 주소에서 다시 접속해 주세요.'
+    );
   }
   // HTML 폼 제출은 CORS fetch가 아닙니다. GAS의 응답 페이지가 postMessage로
   // 처리 결과를 반환합니다. HTML을 JSON으로 읽거나 no-cors로 성공을 추측하지 않습니다.
@@ -167,17 +169,23 @@ async function lookup(qr) {
       ? `남은 등록: 전체 ${scan.remaining.total}건 / 이 학생 ${scan.remaining.student}건. QR 조회는 5분간 유효합니다.`
       : '학생 정보를 확인한 뒤 벌점을 선택해 주세요. QR 조회는 5분간 유효합니다.';
     $('criteria-empty').hidden = scan.criteria.length > 0;
-    if (scan.criteriaError) {
-  message('점수기준 조회 오류: ' + scan.criteriaError);
-}
-    $('submit').disabled = true;
-panel('student');
 
-message(
-  scan.criteriaError
-    ? '점수기준 조회 오류: ' + scan.criteriaError
-    : ''
-);
+    if (scan.criteria.length === 0) {
+      message(
+        scan.criteriaError
+          ? '점수기준 시트 조회 실패: ' + scan.criteriaError
+          : '현재 적용 가능한 벌점 항목이 없습니다. 점수기준 시트의 구분, 점수, 적용시작일, 사용여부를 확인해 주세요.'
+      );
+    }
+    if (scan.criteriaError) {
+      message('점수기준 조회 오류: ' + scan.criteriaError);
+    }
+    $('submit').disabled = true;
+    panel('student');
+
+    if (scan.criteria.length > 0) {
+  message('');
+}
   } catch (error) {
     scan = null;
     panel('scan');
@@ -287,7 +295,7 @@ window.addEventListener('pagehide', stopCamera);
 
 
 /* ==================== 전체 기록 (Google Sheets) ==================== */
-const escapeHTML = (value) => String(value ?? '').replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+const escapeHTML = (value) => String(value ?? '').replace(/[&<>"']/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch]));
 let recordsBusy = false;
 let currentRecords = [];
 
@@ -408,7 +416,7 @@ async function deleteRecord(id) {
   const buttons = [...document.querySelectorAll('.record-delete')];
   buttons.forEach(b => b.disabled = true);
   try {
-    await api('deleteRecord', {id});
+    await api('deleteRecord', { id });
     await loadRecords();
   } catch (error) {
     alert('삭제 실패: ' + (error.message || '알 수 없는 오류'));
