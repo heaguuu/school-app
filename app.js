@@ -461,6 +461,21 @@ $('record-list').addEventListener('click', event => {
 
 let currentUser = null;
 
+function updateAccountUI() {
+  if (!currentUser) {
+    $('accountName').textContent = '—';
+    $('accountDetail').textContent = '';
+    return;
+  }
+
+  $('accountName').textContent = currentUser.name || '선도부원';
+
+  $('accountDetail').textContent =
+    `${currentUser.grade}학년 ` +
+    `${currentUser.classNo}반 ` +
+    `${currentUser.number}번 · 로그인 중`;
+}
+
 function getSessionToken() {
   return sessionStorage.getItem('prefectSession') || '';
 }
@@ -470,7 +485,11 @@ async function loginSubmit(event) {
 
   const button = $('loginButton');
   const error = $('loginError');
+  currentUser = data.user;
+  updateAccountUI();
 
+  $('loginKey').value = '';
+  document.body.classList.add('is-logged-in');
   button.disabled = true;
   error.textContent = '';
 
@@ -509,6 +528,10 @@ async function loginSubmit(event) {
 
 async function restoreLogin() {
   const token = getSessionToken();
+  currentUser = data.user;
+  updateAccountUI();
+
+  document.body.classList.add('is-logged-in');
 
   if (!token) return;
 
@@ -532,6 +555,10 @@ async function restoreLogin() {
 
 async function logout() {
   const token = getSessionToken();
+  currentUser = null;
+  updateAccountUI();
+
+  document.body.classList.remove('is-logged-in');
 
   stopCamera();
 
@@ -558,3 +585,5 @@ document.getElementById('loginForm')
   .addEventListener('submit', loginSubmit);
 
 restoreLogin();
+
+$('logoutButton').addEventListener('click', logout);
