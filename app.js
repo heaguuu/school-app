@@ -484,13 +484,10 @@ async function loginSubmit(event) {
   event.preventDefault();
 
   const button = $('loginButton');
-  const error = $('loginError');
-  currentUser = data.user;
-  updateAccountUI();
+const error = $('loginError');
 
-  $('loginKey').value = '';
-  document.body.classList.add('is-logged-in');
-  button.disabled = true;
+button.disabled = true;
+error.textContent = '';
   error.textContent = '';
 
   try {
@@ -508,6 +505,7 @@ async function loginSubmit(event) {
     sessionStorage.setItem('prefectSession', data.token);
 
     currentUser = data.user;
+    updateAccountUI();
 
     $('loginKey').value = '';
     document.body.classList.add('is-logged-in');
@@ -528,10 +526,6 @@ async function loginSubmit(event) {
 
 async function restoreLogin() {
   const token = getSessionToken();
-  currentUser = data.user;
-  updateAccountUI();
-
-  document.body.classList.add('is-logged-in');
 
   if (!token) return;
 
@@ -543,6 +537,7 @@ async function restoreLogin() {
     }
 
     currentUser = data.user;
+    updateAccountUI();
 
     document.body.classList.add('is-logged-in');
 
