@@ -1,0 +1,394 @@
+@charset "UTF-8";
+
+:root {
+  --blue: #2f78f5;
+  --blue-soft: #edf4ff;
+  --ink: #14264a;
+  --copy: #586b8e;
+  --muted: #687d9c;
+  --line: #e4ecf8;
+  font-family: Pretendard, -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", sans-serif;
+  color: var(--ink);
+  background: #edf3fc;
+  font-synthesis: none;
+}
+* { box-sizing: border-box; }
+body { margin: 0; min-width: 320px; }
+button, input { font: inherit; }
+button { cursor: pointer; }
+button:disabled { opacity: .5; cursor: not-allowed; }
+[hidden] { display: none !important; }
+h1, h2, h3, p { margin-top: 0; }
+.phone-app { width: 100%; max-width: 540px; min-height: 100dvh; margin: 0 auto; background: #f8fbff; }
+.phone-header { display: flex; align-items: center; gap: 12px; padding: 22px; background: #fff; border-bottom: 1px solid var(--line); }
+.brand-mark { display: grid; place-items: center; width: 44px; height: 44px; border: 2px solid #941139; border-radius: 12px; color: #941139; font-size: 25px; font-weight: 700; }
+.eyebrow { color: var(--muted); font-size: 9px; letter-spacing: 1.3px; }
+h1 { margin: 4px 0 0; font-size: 18px; }
+.test-badge, .pill { color: #275fc5; background: var(--blue-soft); border-radius: 8px; padding: 6px 9px; font-size: 10px; font-weight: 700; white-space: nowrap; }
+.test-badge { margin-left: auto; }
+.phone-main { padding: 28px 20px 0; }
+.welcome { margin-bottom: 24px; }
+.date-label { color: var(--blue); font-size: 10px; font-weight: 800; letter-spacing: 1px; }
+.welcome h2 { margin: 10px 0; font-size: 28px; line-height: 1.4; letter-spacing: -.8px; }
+.welcome p { margin-bottom: 0; font-size: 13px; line-height: 1.8; color: var(--copy); }
+.steps { display: flex; gap: 7px; margin: 0 0 20px; padding: 0; list-style: none; }
+.steps li { display: flex; align-items: center; justify-content: center; gap: 5px; flex: 1; min-height: 43px; padding: 8px 2px; border-radius: 10px; color: #627595; background: #eaf0f9; font-size: 11px; }
+.steps li span { font-size: 10px; }
+.steps .active { background: #deebff; color: #215dbd; font-weight: 750; }
+.card { padding: 21px; border: 1px solid var(--line); border-radius: 19px; background: #fff; box-shadow: 0 7px 28px #244e9206; }
+.card h2 { font-size: 17px; line-height: 1.5; margin: 0; }
+.card-heading { display: flex; gap: 11px; align-items: center; margin-bottom: 19px; }
+.card-heading p { margin: 4px 0 0; color: var(--muted); font-size: 11px; line-height: 1.7; }
+.scan-icon { display: grid; place-items: center; width: 42px; height: 42px; flex-shrink: 0; border-radius: 12px; background: var(--blue-soft); color: var(--blue); font-size: 30px; }
+.camera-wrap { position: relative; overflow: hidden; aspect-ratio: 1; border-radius: 14px; background: #18253e; }
+#video { display: block; width: 100%; height: 100%; object-fit: cover; }
+.scan-frame { position: absolute; inset: 17%; border: 3px solid #fff; border-radius: 15px; box-shadow: 0 0 0 100vmax #00000025; pointer-events: none; }
+#camera-hint { position: absolute; left: 12px; right: 12px; bottom: 15px; margin: 0; color: #e3edfc; text-align: center; font-size: 11px; line-height: 1.7; text-shadow: 0 1px 4px #000; }
+.primary-button, .secondary-button { display: block; width: 100%; min-height: 48px; padding: 13px 12px; border: 0; border-radius: 11px; font-size: 13px; font-weight: 750; line-height: 1.5; }
+.primary-button { color: #fff; background: var(--blue); }
+.primary-button:hover:not(:disabled) { background: #2169e5; }
+.secondary-button { margin-top: 10px; color: #2c66cc; background: var(--blue-soft); }
+#start { margin-top: 18px; }
+.help { margin: 15px 0 0; color: var(--muted); font-size: 11px; line-height: 1.8; }
+.section-heading { display: flex; gap: 8px; justify-content: space-between; align-items: center; margin-bottom: 18px; }
+.student-info { padding: 17px; margin-bottom: 23px; border-radius: 13px; background: #f0f6ff; }
+.student-heading { display: flex; align-items: center; gap: 11px; }
+.student-avatar { display: grid; place-items: center; width: 42px; height: 42px; flex-shrink: 0; border-radius: 50%; background: #dce9ff; color: #3268c8; font-size: 11px; }
+.student-heading h3 { margin: 0; font-size: 18px; }
+.student-heading p { margin: 5px 0 0; color: var(--copy); font-size: 10px; line-height: 1.7; }
+.student-grid { display: grid; grid-template-columns: repeat(3, 1fr); margin: 18px 0 14px; }
+.student-grid div { text-align: center; border-right: 1px solid #dce6f5; }
+.student-grid div:last-child { border: 0; }
+.student-grid dt { color: var(--muted); font-size: 10px; }
+.student-grid dd { margin: 5px 0 0; font-weight: 750; font-size: 19px; }
+.student-id-line { display: flex; justify-content: space-between; gap: 12px; border-top: 1px solid #dce6f5; padding-top: 12px; font-size: 10px; }
+.student-id-line span { color: var(--muted); }
+.student-id-line strong { overflow-wrap: anywhere; text-align: right; }
+fieldset { min-width: 0; margin: 0; padding: 0; border: 0; }
+legend { margin-bottom: 7px; font-size: 15px; font-weight: 750; }
+.field-help { margin-bottom: 14px; color: var(--muted); font-size: 11px; line-height: 1.7; }
+.criteria-list { display: grid; gap: 9px; }
+.criterion { display: flex; align-items: flex-start; gap: 9px; padding: 14px 11px; border: 1px solid #dce6f5; border-radius: 11px; cursor: pointer; }
+.criterion:has(input:checked) { border-color: var(--blue); background: #f2f7ff; }
+.criterion input { width: 17px; height: 17px; margin: 1px 0 0; flex-shrink: 0; accent-color: var(--blue); }
+.criterion span { flex: 1; color: var(--ink); font-size: 12px; line-height: 1.65; overflow-wrap: anywhere; }
+.criterion b { color: var(--blue); font-size: 12px; line-height: 1.65; white-space: nowrap; }
+.selection-summary { padding: 15px; margin-top: 17px; border-radius: 11px; background: var(--blue-soft); }
+.selection-summary div { display: flex; justify-content: space-between; align-items: baseline; gap: 18px; font-size: 11px; line-height: 1.8; }
+.selection-summary div + div { margin-top: 8px; }
+.selection-summary div > span { color: var(--copy); white-space: nowrap; }
+.selection-summary strong { text-align: right; }
+#limits { margin-bottom: 15px; }
+.loading-card { padding: 44px 20px; text-align: center; }
+.loading-card p { margin: 12px 0 0; color: var(--copy); font-size: 12px; line-height: 1.9; }
+.spinner { width: 36px; height: 36px; margin: 0 auto 22px; border: 3px solid #e1ecff; border-top-color: var(--blue); border-radius: 50%; animation: spin 1s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.result-card { text-align: center; }
+.result-check { display: grid; place-items: center; width: 57px; height: 57px; margin: 9px auto 20px; border-radius: 50%; background: #e9f7f3; color: #1d9c80; font-size: 29px; }
+.result-card > p { margin: 10px 0; color: var(--copy); font-size: 12px; line-height: 1.8; }
+.receipt-details { margin: 23px 0; padding: 15px; border-radius: 12px; background: #f4f7fc; text-align: left; }
+.receipt-details div { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; padding: 7px 0; font-size: 11px; line-height: 1.8; }
+.receipt-details dt { color: var(--muted); white-space: nowrap; }
+.receipt-details dd { margin: 0; font-weight: 650; text-align: right; overflow-wrap: anywhere; }
+#receipt { margin-bottom: 20px; overflow-wrap: anywhere; font-size: 10px; }
+.status-message { margin: 18px 0 0; padding: 13px 15px; border: 1px solid #f0d5d5; border-radius: 11px; background: #fff5f5; color: #a3333b; font-size: 12px; line-height: 1.9; white-space: pre-line; overflow-wrap: anywhere; }
+.status-message:empty { display: none; }
+.app-footer { padding: 25px 20px 30px; color: var(--muted); text-align: center; font-size: 10px; line-height: 1.9; }
+.app-footer p { margin-bottom: 5px; }
+.app-footer small { font-size: 9px; }
+button:focus-visible, input:focus-visible { outline: 3px solid #e5a42f; outline-offset: 4px; }
+@media (max-width: 360px) { .phone-main { padding-left: 14px; padding-right: 14px; } .card { padding: 17px; } .section-heading { align-items: flex-start; } .steps li { font-size: 10px; } }
+@media (prefers-reduced-motion: reduce) { .spinner { animation: none; } }
+
+
+/* QR 등록 / 전체 기록 탭 */
+.main-tabs{display:flex;gap:8px;padding:14px 20px;background:#fff;border-bottom:1px solid var(--line)}
+.tab{flex:1;border:0;border-radius:10px;padding:13px 10px;background:#edf3fc;color:#536989;font-weight:750;font-size:13px}
+.tab.active{background:#2f78f5;color:#fff}
+.records-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:20px}
+.records-heading h2{font-size:27px;margin:8px 0}
+.records-heading p{font-size:12px;color:var(--copy);margin:0;line-height:1.6}
+.refresh-button{border:1px solid #d8e5f8;background:#fff;border-radius:10px;padding:10px 12px;color:#2767c9;white-space:nowrap;font-weight:700}
+.record-count{color:#627595;font-size:12px;margin-bottom:13px}
+.record-list{display:grid;gap:12px}
+.record-card{border:1px solid var(--line);border-radius:16px;padding:18px;background:#fff;box-shadow:0 5px 18px #244e9208}
+.record-top,.record-bottom{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.record-top strong{display:block;font-size:16px}
+.record-student{display:block;font-size:11px;color:#627595;margin-top:5px}
+.record-score{font-size:21px;white-space:nowrap}
+.record-score.demerit{color:#df4e5a}.record-score.merit{color:#14896a}
+.record-reason{font-size:13px;line-height:1.7;margin:16px 0;color:#22375c}
+.record-bottom{border-top:1px solid var(--line);padding-top:12px;align-items:center}
+.record-bottom time,.record-bottom small{display:block;font-size:10px;color:#7385a1;line-height:1.8}
+.record-delete{border:0;border-radius:8px;padding:8px 12px;background:#f5f1f2;color:#b64a55;font-weight:700}
+.empty-records{background:#fff;border:1px solid var(--line);border-radius:14px;padding:36px 14px;text-align:center;color:#6b7f9d;font-size:13px}
+
+
+/* ========================================
+   모바일 앱 리디자인 · 기존 JS 및 GS 유지
+======================================== */
+:root {
+  --blue:#385fe7;
+  --blue-soft:#eef1ff;
+  --ink:#17213a;
+  --copy:#596782;
+  --muted:#8290a8;
+  --line:#e8ecf3;
+}
+html { background:#eef1f7; }
+body { background:#eef1f7; }
+.phone-app {
+  position:relative;
+  max-width:460px;
+  min-height:100dvh;
+  background:#f7f8fc;
+  padding-bottom:104px;
+  box-shadow:0 0 45px #17213a0a;
+}
+.phone-header {
+  position:sticky;
+  top:0;
+  z-index:20;
+  padding:calc(14px + env(safe-area-inset-top)) 22px 15px;
+  border-bottom:1px solid #eff1f6;
+  background:#ffffffed;
+  backdrop-filter:blur(18px);
+}
+.brand-mark {
+  width:39px;height:39px;
+  border:0;border-radius:13px;
+  background:#eef1ff;color:#385fe7;
+  font-size:20px;
+}
+.phone-header h1 { font-size:17px;letter-spacing:-.6px; }
+.eyebrow {font-size:9px;letter-spacing:1px;color:#8996b1}
+.test-badge {background:#f2f4f9;color:#78849a;font-size:10px}
+.phone-main {padding:25px 19px 12px}
+.welcome {margin-bottom:24px}
+.date-label {color:#526be4;font-size:11px;letter-spacing:0;font-weight:800}
+.welcome h2 {font-size:29px;line-height:1.36;letter-spacing:-1.4px;margin:10px 0}
+.welcome p {font-size:12px;line-height:1.75;color:#77839a}
+.steps {gap:8px;margin-bottom:19px}
+.steps li {border-radius:12px;background:#edf0f6;color:#8995ab;min-height:39px;font-size:11px}
+.steps .active {background:#e9eeff;color:#395bd3}
+.card {border:1px solid #edf0f6;border-radius:22px;padding:21px;background:#fff;box-shadow:0 6px 24px #1b2e5b07}
+.card h2 {font-size:17px;letter-spacing:-.5px}
+.scan-icon {border-radius:13px;background:#edf1ff;color:#4265e8}
+.camera-wrap {border-radius:17px;background:#17233e;aspect-ratio:1.07}
+.scan-frame {border:2px solid #ffffffdd;border-radius:20px}
+.primary-button {background:#3d62e8;border-radius:13px;min-height:52px;font-size:14px;box-shadow:0 5px 12px #3d62e824}
+.primary-button:hover:not(:disabled){background:#3457d8}
+.secondary-button {background:#f0f3fa;color:#55688d;border-radius:13px;min-height:48px}
+.help {font-size:11px;line-height:1.8}
+.student-info {border-radius:17px;background:#f3f6ff}
+.student-avatar {background:#e2e9ff;color:#4265e8}
+.criterion {border-radius:13px;border-color:#e5eaf4;padding:15px 12px}
+.criterion:has(input:checked){background:#f0f3ff;border-color:#617aeb}
+.criterion input {accent-color:#4265e8}
+.criterion b {color:#3b5fd7}
+.selection-summary {background:#f0f3ff;border-radius:14px}
+.record-list {gap:11px}
+.record-card {border:1px solid #ecf0f6;border-radius:18px;box-shadow:0 5px 20px #17213a08;padding:18px}
+.record-top strong {font-size:15px}
+.record-reason {margin:14px 0;font-size:13px}
+.record-score {font-size:20px}
+.record-delete {border-radius:10px}
+.records-heading h2 {font-size:26px;letter-spacing:-1px}
+.refresh-button {border-radius:11px}
+.main-tabs {
+  position:fixed;
+  bottom:0;
+  left:50%;
+  transform:translateX(-50%);
+  width:100%;
+  max-width:460px;
+  z-index:30;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:0;
+  padding:9px 14px calc(10px + env(safe-area-inset-bottom));
+  background:#fffffffa;
+  border-top:1px solid #e9edf5;
+  box-shadow:0 -5px 25px #17213a06;
+}
+.tab {
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:2px;
+  min-height:54px;
+  border:0;border-radius:12px;
+  padding:4px 6px;
+  background:transparent;
+  color:#8b97ac;
+  font-size:11px;
+  font-weight:700;
+}
+.tab.active {background:transparent;color:#3b5fdf}
+.tab-icon {font-size:25px;line-height:1.2;font-weight:400}
+.app-footer {padding:10px 20px 8px;font-size:9px}
+.status-message {border-radius:13px}
+button:focus-visible {outline:2px solid #617aeb;outline-offset:2px}
+@media (min-width:650px) {
+  .phone-app {margin:24px auto;min-height:calc(100dvh - 48px);border-radius:26px;overflow:clip}
+  .main-tabs {bottom:0}
+}
+
+
+/* 전체 기록 기간 필터 */
+.record-filters {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.record-filter {
+  padding: 13px 8px;
+  border: 1px solid #e5eaf4;
+  border-radius: 12px;
+  background: white;
+  color: #78859e;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.record-filter.active {
+  background: #385fe7;
+  color: white;
+  border-color: #385fe7;
+}
+
+.record-count {
+  margin-bottom: 14px;
+  color: #6c7b96;
+  font-size: 12px;
+}
+
+.record-list {
+  display: grid;
+  gap: 12px;
+}
+
+/* 모바일 하단 탭 터치 보정 */
+.main-tabs {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 460px;
+  z-index: 9999;
+  pointer-events: auto;
+}
+
+.main-tabs .tab {
+  position: relative;
+  z-index: 1;
+  pointer-events: auto;
+  touch-action: manipulation;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.login-screen {
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: #f5f7fc;
+}
+
+.login-panel {
+  width: 100%;
+  max-width: 400px;
+  padding: 32px 24px;
+  background: white;
+  border: 1px solid #e5e9f2;
+  border-radius: 20px;
+}
+
+.login-icon {
+  width: 48px;
+  height: 48px;
+  display: grid;
+  place-items: center;
+  border-radius: 14px;
+  background: #e9edff;
+  color: #4763eb;
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.login-panel h1 {
+  font-size: 24px;
+  margin: 0 0 8px;
+}
+
+.login-panel p {
+  color: #7a8499;
+  font-size: 13px;
+}
+
+.login-number-row {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 28px;
+}
+
+.login-panel label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.login-panel input,
+.login-panel select {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  height: 44px;
+  margin-top: 8px;
+  padding: 0 10px;
+  border: 1px solid #dce2ed;
+  border-radius: 9px;
+  background: white;
+  font-size: 14px;
+}
+
+.login-key-label {
+  margin-top: 20px;
+}
+
+#loginButton {
+  width: 100%;
+  height: 48px;
+  margin-top: 18px;
+  border: 0;
+  border-radius: 10px;
+  background: #4763eb;
+  color: white;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+#loginButton:disabled {
+  opacity: .6;
+}
+
+#loginError {
+  color: #dc3545;
+  min-height: 18px;
+}
+
+body:not(.is-logged-in) .phone-header,
+body:not(.is-logged-in) .phone-app main,
+body:not(.is-logged-in) .main-tabs {
+  display: none !important;
+}
+
+body.is-logged-in .login-screen {
+  display: none;
+}
