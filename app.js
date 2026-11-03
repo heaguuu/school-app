@@ -1,5 +1,3 @@
-/* GitHub Pages 전용. QR 영상은 브라우저에서 해석하고 GAS에는 문자열만 보냅니다. */
-// 같은 GAS 배포를 새 버전으로 갱신하면 이 URL은 그대로 사용합니다.
 const GAS_URL = 'https://script.google.com/macros/s/AKfycby5jCVwAh8-YVe-gpYuRn2uHiAXYf7dNIARudvf188sr73VcG0P4z0xvLD81SsSLXkh/exec'; // 새 배포 URL이면 교체
 const $ = (id) => document.getElementById(id);
 const video = $('video');
@@ -75,8 +73,7 @@ async function api(action, payload) {
       '보안 연결이 아닙니다. HTTPS 주소에서 다시 접속해 주세요.'
     );
   }
-  // HTML 폼 제출은 CORS fetch가 아닙니다. GAS의 응답 페이지가 postMessage로
-  // 처리 결과를 반환합니다. HTML을 JSON으로 읽거나 no-cors로 성공을 추측하지 않습니다.
+
   return new Promise((resolve, reject) => {
     const nonce = crypto.randomUUID();
     const frame = document.createElement('iframe');
@@ -265,7 +262,7 @@ async function submit() {
     scan = null; pending = null; message();
     void loadRecords();
   } catch (error) {
-    // 응답 유실 시 항목 변경/다른 QR로 이동하면 중복 등록할 수 있으므로 재시도만 허용합니다.
+
     message(`${error.message || '연결이 끊겼습니다.'}\n응답이 불확실하면 같은 요청으로 다시 시도해 주세요. 같은 요청ID는 한 번만 저장됩니다.`);
     $('submit').textContent = '같은 요청으로 다시 확인';
     if (error.retryable === false) {
