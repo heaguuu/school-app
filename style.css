@@ -392,3 +392,70 @@ body:not(.is-logged-in) .main-tabs {
 body.is-logged-in .login-screen {
   display: none;
 }
+
+/* 로그인 사용자 정보 */
+
+.account-bar {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 14px 20px;
+  background: #fff;
+  border-bottom: 1px solid #e8ecf3;
+}
+
+.account-avatar {
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  border-radius: 13px;
+  background: #eef1ff;
+  font-size: 19px;
+}
+
+.account-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.account-name {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.account-name strong {
+  font-size: 14px;
+  color: #17213a;
+}
+
+.account-name span {
+  font-size: 10px;
+  color: #526be4;
+  background: #eef1ff;
+  border-radius: 6px;
+  padding: 3px 6px;
+}
+
+.account-info p {
+  margin: 5px 0 0;
+  color: #8290a8;
+  font-size: 11px;
+}
+
+#logoutButton {
+  border: 1px solid #e5eaf4;
+  border-radius: 9px;
+  background: #fff;
+  color: #68758e;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 9px 11px;
+  white-space: nowrap;
+}
+
+body:not(.is-logged-in) .account-bar {
+  display: none;
+}
