@@ -289,3 +289,106 @@ button:focus-visible {outline:2px solid #617aeb;outline-offset:2px}
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
 }
+
+.login-screen {
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: #f5f7fc;
+}
+
+.login-panel {
+  width: 100%;
+  max-width: 400px;
+  padding: 32px 24px;
+  background: white;
+  border: 1px solid #e5e9f2;
+  border-radius: 20px;
+}
+
+.login-icon {
+  width: 48px;
+  height: 48px;
+  display: grid;
+  place-items: center;
+  border-radius: 14px;
+  background: #e9edff;
+  color: #4763eb;
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.login-panel h1 {
+  font-size: 24px;
+  margin: 0 0 8px;
+}
+
+.login-panel p {
+  color: #7a8499;
+  font-size: 13px;
+}
+
+.login-number-row {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 28px;
+}
+
+.login-panel label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.login-panel input,
+.login-panel select {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  height: 44px;
+  margin-top: 8px;
+  padding: 0 10px;
+  border: 1px solid #dce2ed;
+  border-radius: 9px;
+  background: white;
+  font-size: 14px;
+}
+
+.login-key-label {
+  margin-top: 20px;
+}
+
+#loginButton {
+  width: 100%;
+  height: 48px;
+  margin-top: 18px;
+  border: 0;
+  border-radius: 10px;
+  background: #4763eb;
+  color: white;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+#loginButton:disabled {
+  opacity: .6;
+}
+
+#loginError {
+  color: #dc3545;
+  min-height: 18px;
+}
+
+body:not(.is-logged-in) .phone-header,
+body:not(.is-logged-in) .phone-app main,
+body:not(.is-logged-in) .main-tabs {
+  display: none !important;
+}
+
+body.is-logged-in .login-screen {
+  display: none;
+}
