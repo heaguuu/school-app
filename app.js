@@ -95,8 +95,7 @@ async function api(action, payload) {
       form.remove(); frame.remove();
     };
     const onMessage = (event) => {
-      // GAS는 내부 iframe에서 응답하므로 source가 바깥 iframe과 다릅니다.
-      // Google 응답 출처·요청별 난수·고정 프로토콜을 모두 확인합니다.
+      
       let host;
       try { const url = new URL(event.origin); if (url.protocol !== 'https:') return; host = url.hostname; } catch { return; }
       if (host !== 'script.google.com' && host !== 'script.googleusercontent.com' && !host.endsWith('-script.googleusercontent.com')) return;
@@ -184,8 +183,8 @@ async function lookup(qr) {
     panel('student');
 
     if (scan.criteria.length > 0) {
-  message('');
-}
+      message('');
+    }
   } catch (error) {
     scan = null;
     panel('scan');
@@ -412,45 +411,25 @@ async function loadRecords() {
 }
 
 async function deleteRecord(id) {
-  if (busy || recordsBusy) return;
-
-  const confirmed = confirm(
-    '이 벌점 기록을 삭제하시겠습니까?\n\n' +
-    '기존 기록은 취소 처리되고, ' +
-    '구글 시트에 삭제 이력이 남습니다.'
-  );
-
-  if (!confirmed) return;
-
-  const buttons = [
-    ...document.querySelectorAll('.record-delete')
-  ];
-
-  buttons.forEach(button => {
-    button.disabled = true;
-  });
-
+  if (!confirm('이 기록을 삭제 처리할까요? 시트에는 삭제 이력이 남습니다.')) return;
+  const buttons = [...document.querySelectorAll('.record-delete')];
+  buttons.forEach(b => b.disabled = true);
   try {
     const result = await api('deleteRecord', { id });
 
     if (!result || result.success !== true) {
-      throw new Error('삭제 결과를 확인하지 못했습니다.');
+      throw new Error('삭제 처리 결과를 확인하지 못했습니다.');
     }
 
-    alert('기록이 삭제 처리되었습니다.');
-
     await loadRecords();
-
   } catch (error) {
-    alert(
-      '삭제 처리 확인 실패: ' +
-      (error.message || '알 수 없는 오류') +
-      '\n\n중복 요청 전에 구글 시트를 확인해 주세요.'
-    );
-
-  } finally {
-    buttons.forEach(button => {
-      button.disabled = false;
-    });
-  }
+    alert('삭제 실패: ' + (error.message || '알 수 없는 오류'));
+  } finally { buttons.forEach(b => b.disabled = false); }
 }
+$('tab-scan').addEventListener('click', () => switchView('scan'));
+$('tab-records').addEventListener('click', () => switchView('records'));
+$('refresh-records').addEventListener('click', loadRecords);
+$('record-list').addEventListener('click', event => {
+  const button = event.target.closest('button[data-record-id]');
+  if (button) void deleteRecord(button.dataset.recordId);
+});
