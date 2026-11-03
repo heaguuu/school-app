@@ -231,3 +231,40 @@ button:focus-visible {outline:2px solid #617aeb;outline-offset:2px}
   .phone-app {margin:24px auto;min-height:calc(100dvh - 48px);border-radius:26px;overflow:clip}
   .main-tabs {bottom:0}
 }
+
+
+/* 전체 기록 기간 필터 */
+.record-filters {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.record-filter {
+  padding: 13px 8px;
+  border: 1px solid #e5eaf4;
+  border-radius: 12px;
+  background: white;
+  color: #78859e;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.record-filter.active {
+  background: #385fe7;
+  color: white;
+  border-color: #385fe7;
+}
+
+.record-count {
+  margin-bottom: 14px;
+  color: #6c7b96;
+  font-size: 12px;
+}
+
+.record-list {
+  display: grid;
+  gap: 12px;
+}
