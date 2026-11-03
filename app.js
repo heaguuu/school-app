@@ -87,15 +87,24 @@ async function api(action, payload) {
     form.method = 'POST'; form.action = GAS_URL; form.target = frame.name; form.hidden = true;
     const field = document.createElement('input');
     field.type = 'hidden'; field.name = 'packet';
-    field.value = JSON.stringify({ action, payload, nonce, replyOrigin: location.origin });
-    form.append(field);
+    const token = sessionStorage.getItem('prefectSession') || '';
+
+    field.value = JSON.stringify({
+      action,
+      payload: {
+        ...(payload || {}),
+        ...(token ? { token } : {})
+      },
+      nonce,
+      replyOrigin: location.origin
+    }); form.append(field);
     const cleanup = () => {
       clearTimeout(timer);
       window.removeEventListener('message', onMessage);
       form.remove(); frame.remove();
     };
     const onMessage = (event) => {
-      
+
       let host;
       try { const url = new URL(event.origin); if (url.protocol !== 'https:') return; host = url.hostname; } catch { return; }
       if (host !== 'script.google.com' && host !== 'script.googleusercontent.com' && !host.endsWith('-script.googleusercontent.com')) return;
@@ -104,8 +113,24 @@ async function api(action, payload) {
       cleanup();
       if (packet.ok) resolve(packet.data);
       else {
-        const error = new Error(packet.error || 'GAS에서 요청을 처리하지 못했습니다.');
+        const error = new Error(
+          packet.error || 'GAS에서 요청을 처리하지 못했습니다.'
+        );
+
         error.retryable = Boolean(packet.retryable);
+
+        if (
+          action !== 'login' &&
+          action !== 'logout' &&
+          action !== 'checkSession' &&
+          /로그인이 필요|로그인이 만료|사용자 정보가 변경/.test(error.message)
+        ) {
+          sessionStorage.removeItem('prefectSession');
+          currentUser = null;
+          stopCamera();
+          document.body.classList.remove('is-logged-in');
+        }
+
         reject(error);
       }
     };
@@ -377,7 +402,7 @@ function recordCard(r) {
     <div class="record-top"><div><strong>${escapeHTML(r.studentName)}</strong><span class="record-student">${escapeHTML(r.grade)}학년 ${escapeHTML(r.classNo)}반 ${escapeHTML(r.number)}번</span></div>
       <b class="record-score ${category}">${escapeHTML(signed)}점</b></div>
     <p class="record-reason">${escapeHTML(r.reason)}</p>
-    <div class="record-bottom"><div><time>${escapeHTML(r.createdAt)}</time><small>등록자: ${escapeHTML(r.requesterId || '테스트')}</small></div>
+    <div class="record-bottom"><div><time>${escapeHTML(r.createdAt)}</time><small>등록자: ${escapeHTML(r.requesterName || r.requesterId || '알 수 없는 사용자')}</small></div>
       ${canDelete ? `<button type="button" class="record-delete" data-record-id="${escapeHTML(r.id)}">삭제</button>` : '<small>이전 기록</small>'}</div>
   </article>`;
 }
@@ -443,34 +468,40 @@ function getSessionToken() {
 async function loginSubmit(event) {
   event.preventDefault();
 
-  const button = document.getElementById('loginButton');
-  const error = document.getElementById('loginError');
+  const button = $('loginButton');
+  const error = $('loginError');
 
   button.disabled = true;
   error.textContent = '';
 
   try {
-    const result = await api('login', {
-      grade: document.getElementById('loginGrade').value,
-      classNo: document.getElementById('loginClass').value,
-      number: document.getElementById('loginNumber').value,
-      authKey: document.getElementById('loginKey').value
+    const data = await api('login', {
+      grade: $('loginGrade').value,
+      classNo: $('loginClass').value,
+      number: $('loginNumber').value,
+      authKey: $('loginKey').value
     });
 
-    if (!result.ok) {
-      throw new Error(result.error || '로그인에 실패했습니다.');
+    if (!data?.token || !data?.user) {
+      throw new Error('로그인 응답이 올바르지 않습니다.');
     }
 
-    const data = result.data;
-
     sessionStorage.setItem('prefectSession', data.token);
+
     currentUser = data.user;
 
-    document.getElementById('loginKey').value = '';
+    $('loginKey').value = '';
     document.body.classList.add('is-logged-in');
 
+    scan = null;
+    pending = null;
+    selectedCriterion = null;
+
+    panel('scan');
+    switchView('scan');
+
   } catch (err) {
-    error.textContent = err.message;
+    error.textContent = err.message || '로그인에 실패했습니다.';
   } finally {
     button.disabled = false;
   }
@@ -482,11 +513,14 @@ async function restoreLogin() {
   if (!token) return;
 
   try {
-    const result = await api('checkSession', { token });
+    const data = await api('checkSession', { token });
 
-    if (!result.ok) throw new Error('세션 만료');
+    if (!data?.user) {
+      throw new Error('세션 정보가 올바르지 않습니다.');
+    }
 
-    currentUser = result.data.user;
+    currentUser = data.user;
+
     document.body.classList.add('is-logged-in');
 
   } catch (err) {
@@ -499,7 +533,15 @@ async function restoreLogin() {
 async function logout() {
   const token = getSessionToken();
 
+  stopCamera();
+
+  scan = null;
+  pending = null;
+  selectedCriterion = null;
+  currentRecords = [];
+
   sessionStorage.removeItem('prefectSession');
+
   currentUser = null;
   document.body.classList.remove('is-logged-in');
 
